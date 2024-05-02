@@ -6,7 +6,7 @@ class Search extends StatelessWidget {
   TextEditingController controller = TextEditingController();
 
   InputBorder searchBorder =  OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20.0),         
+    borderRadius: BorderRadius.circular(10.0),         
     borderSide: const BorderSide(width:1,color: Colors.black54,style: BorderStyle.solid)       
   );
   @override

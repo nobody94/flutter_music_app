@@ -41,6 +41,11 @@ dependencies:
   intl: ^0.18.1
   flutter_bloc: ^8.1.5
   bloc: ^8.1.4
+  http: ^1.1.0
+  spotify: ^0.13.1
+  audio_video_progress_bar: ^2.0.2
+  youtube_explode_dart: ^2.0.2
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:

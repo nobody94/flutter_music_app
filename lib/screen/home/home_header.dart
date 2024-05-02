@@ -14,16 +14,23 @@ class HomeHeader extends StatelessWidget {
             Row(
               children: [
                 Container(
-                    width: 30.0,
-                    height: 30.0,
+                    width: 35.0,
+                    height: 35.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: Colors.blue),
+                        color: Colors.blue
+                    ),
                     child: const Center(
-                      child: Text('M'),
+                      child: Text(
+                        'M',
+                        style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),
+                      ),
                     )),
                 const SizedBox(width: 15),
-                const Text('Hi, Martha')
+                const Text(
+                  'Hi, Martha',
+                  style: TextStyle(fontSize: 24),
+                )
               ]
             ),
             GestureDetector(
