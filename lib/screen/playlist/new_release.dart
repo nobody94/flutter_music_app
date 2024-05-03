@@ -33,6 +33,6 @@ class _NewReleaseState extends State<NewRelease> {
     
   @override
   Widget build(BuildContext context) {
-    return  PlayList(listChild:listAlbum,title:'New Release');
+    return  PlayList(listChild:listAlbum,title:'Bài hát mới nhất');
   }
 }

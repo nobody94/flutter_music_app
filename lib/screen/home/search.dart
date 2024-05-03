@@ -11,12 +11,10 @@ class Search extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding:const EdgeInsets.symmetric(horizontal: 20),
-      margin: const EdgeInsets.only(top:20),
-      child: Stack(
+    return Expanded(      
+      child:Stack(
         alignment: Alignment.center,
-        children: [
+        children: [          
           TextField(
             controller: controller,
             decoration: InputDecoration(
@@ -31,7 +29,7 @@ class Search extends StatelessWidget {
             child: Icon(Icons.search)
           )
         ]
-      )
+      )       
     );
   }
 }
