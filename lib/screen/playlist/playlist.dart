@@ -1,10 +1,11 @@
-import 'package:first_app/api/api.dart';
 import 'package:flutter/material.dart';
 
 class PlayList extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
-  PlayList({super.key,required this.type});  
-  final String type;
+  PlayList({super.key,required this.listChild,required this.title});    
+  final String title;
+  final List<PlayType> listChild;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,18 +14,20 @@ class PlayList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListHeader(type: type),
-          ListWrapper()
+          ListHeader(title: title,onShowAll:(){}),
+          const SizedBox(height: 10),
+          ListWrapper(listChild: listChild)
         ],
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class ListHeader extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  ListHeader({super.key,required this.type});
-  final String type;
+  ListHeader({super.key,required this.title, required this.onShowAll});
+  final String title;
+  Function() onShowAll;
  
   @override
   Widget build(BuildContext context) {
@@ -33,42 +36,93 @@ class ListHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          type == 'top' ? 'Top Album' : type == 'popular' ? 'Popular radio' : 'Recommended radio',
-          style: const TextStyle(fontSize: 20,color: Colors.black87),
+          title,
+          style: const TextStyle(fontSize: 18,color: Colors.black87),
         ),
         GestureDetector(
+          onTap: onShowAll,
           child: const Text(
             'Show all',
             style: TextStyle(color: Colors.black54),
-          ),
+          )
         )
       ],
     );
   }
 }
 
-class ListWrapper extends StatefulWidget {
-  const ListWrapper({super.key});
-
-  @override
-  State<ListWrapper> createState() => _ListWrapperState();
-}
-
-class _ListWrapperState extends State<ListWrapper> {
-  fetchAlbum() async {  
-    final artist = await SpotifyCredentials.spotify.albums.list(['382ObEPsp2rxGrnsizN5TX','1A2GTWGtFfWp7KSQTwWOyo']);
-    print(artist);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchAlbum();
-  }
+class ListWrapper extends StatelessWidget {
+  ListWrapper({super.key,required this.listChild});
+  
+  List<PlayType> listChild;  
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: listChild.map((c){       
+          return Column(
+            children: [
+              Row(          
+                children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.network(c.images[0],width: 50),
+                        const Icon(Icons.play_arrow,color: Colors.white,size: 30,)
+                      ]
+                    ),                    
+                    const SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(c.name,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 5),
+                        c.artist != null 
+                        ? Text(
+                          c.artist!.map((t)=> t.name).join(', '),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 12,color: Colors.black54)
+                        ) 
+                        : const SizedBox(),          
+                        c.description != null 
+                        ? Text(
+                          c.description!,
+                          overflow: TextOverflow.ellipsis,
+                        ) 
+                        : const SizedBox()
+                      ]
+                    )            
+                  ],         
+              ),
+              const SizedBox(height: 15)
+            ]
+          );
+        }).toList(),     
+    );   
   }
+}
+
+class ArtistType {
+  String id;
+  String name;
+
+  ArtistType({required this.id, required this.name});
+}
+
+class PlayType {
+  String id;
+  String name;
+  List<String> images;
+  String type;
+  List<ArtistType> ?artist;
+  String ?description;
+
+  PlayType({
+    required this.id, 
+    required this.name,
+    required this.images,
+    required this.type,
+    this.artist,
+    this.description
+  });
 }
