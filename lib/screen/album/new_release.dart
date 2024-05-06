@@ -12,15 +12,22 @@ class NewRelease extends StatefulWidget {
 
 class _NewReleaseState extends State<NewRelease> {
   List<PlayType> listAlbum = [];
+  bool isLoading = false;
 
   fetchAlbum() async {  
-    final album = await SpotifyCredentials.spotify.browse.newReleases(country: Market.VN).first(5);    
+    setState(() {
+      isLoading = true;
+    });
+    final album = await SpotifyCredentials.spotify.browse.newReleases(country: Market.VI).first(5);    
     if(album.items != null){
       for (var a in album.items!) {    
-      setState(() {
+        setState(() {
           listAlbum.add(PlayType(id: a.id!, name: a.name!, images: a.images!.map((m)=> m.url!).toList(),artist: a.artists!.map((t)=> ArtistType(id:t.id!,name: t.name!)).toList(), type: a.type! ));
         });
       }
+      setState(() {
+        isLoading = false;
+      });
     } 
   }   
 
@@ -33,6 +40,6 @@ class _NewReleaseState extends State<NewRelease> {
     
   @override
   Widget build(BuildContext context) {
-    return  PlayList(listChild:listAlbum,title:'Bài hát mới nhất');
+    return  PlayList(listChild:listAlbum,title:'Album mới nhất',isLoading:isLoading,onShowAll: (){});
   }
 }

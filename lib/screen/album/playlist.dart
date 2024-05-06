@@ -1,24 +1,29 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:first_app/screen/playlist/list_shimmer.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PlayList extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
-  PlayList({super.key,required this.listChild,required this.title});    
+  PlayList({super.key,required this.listChild,required this.title,required this.isLoading,required this.onShowAll});    
   final String title;
   final List<PlayType> listChild;
+  bool isLoading;
+  void Function() onShowAll;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding:const EdgeInsets.symmetric(horizontal: 20),
       margin: const EdgeInsets.only(top:20),
-      child: Column(
+      child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListHeader(title: title,onShowAll:(){}),
+          ListHeader(title: title,onShowAll:onShowAll),
           const SizedBox(height: 10),
-          ListWrapper(listChild: listChild)
+          ListWrapper(listChild: listChild,isLoading:isLoading)
         ],
-      ),
+      ), 
     );
   }
 }
@@ -27,7 +32,7 @@ class PlayList extends StatelessWidget {
 class ListHeader extends StatelessWidget {
   ListHeader({super.key,required this.title, required this.onShowAll});
   final String title;
-  Function() onShowAll;
+  void Function() onShowAll;
  
   @override
   Widget build(BuildContext context) {
@@ -53,30 +58,47 @@ class ListHeader extends StatelessWidget {
 
 // ignore: must_be_immutable
 class ListWrapper extends StatelessWidget {
-  ListWrapper({super.key,required this.listChild});
+  ListWrapper({super.key,required this.listChild,required this.isLoading});
   
   List<PlayType> listChild;  
-
+  bool isLoading;
+ 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: listChild.map((c){       
+      children: isLoading 
+      ? [
+        const ListShimmer()
+      ]
+      : listChild.map((c){       
           return Column(
             children: [
               Row(          
                 children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.network(c.images[0],width: 50),
-                        const Icon(Icons.play_arrow,color: Colors.white,size: 30,)
-                      ]
-                    ),                    
+                    CachedNetworkImage(
+                      progressIndicatorBuilder: (context, url, progress) => Center(  
+                        child: SizedBox(
+                          width:15,
+                          height:15,
+                          child: CircularProgressIndicator(
+                            value: progress.progress,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      ),
+                      imageUrl:c.images[0],
+                      width: 50
+                    ),                   
                     const SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(c.name,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        GestureDetector(
+                          onTap:(){
+                            print(c.type);
+                          },
+                          child: Text(c.name,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                        ),
                         const SizedBox(height: 5),
                         c.artist != null 
                         ? Text(
@@ -102,6 +124,7 @@ class ListWrapper extends StatelessWidget {
     );   
   }
 }
+
 
 class ArtistType {
   String id;
