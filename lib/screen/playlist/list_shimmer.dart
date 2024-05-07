@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+// ignore: must_be_immutable
 class ListShimmer extends StatelessWidget {
-  const ListShimmer({super.key});
+  ListShimmer({super.key, required this.num});
+  int num;
   List<Widget> generateContent(){   
     List<Widget> child = [];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < num; i++) {
       child.add(Column(
         children: [
           Row(

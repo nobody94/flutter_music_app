@@ -1,7 +1,7 @@
 import 'package:first_app/api/api.dart';
+import 'package:first_app/screen/playlist/list_wrapper.dart';
 import 'package:first_app/screen/playlist/playlist.dart';
 import 'package:flutter/material.dart';
-import 'package:spotify/spotify.dart';
 
 class FeaturedPlaylist extends StatefulWidget {
   const FeaturedPlaylist({super.key});
