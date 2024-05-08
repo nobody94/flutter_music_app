@@ -1,5 +1,5 @@
 import 'package:first_app/api/api.dart';
-import 'package:first_app/screen/playlist/list_wrapper.dart';
+import 'package:first_app/ultity/list_wrapper.dart';
 import 'package:first_app/screen/playlist/playlist.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify/spotify.dart';
@@ -34,7 +34,6 @@ class _NewReleaseState extends State<NewRelease> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchAlbum();    
   }

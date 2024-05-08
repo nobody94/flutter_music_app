@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:first_app/screen/playlist/list_shimmer.dart';
+import 'package:first_app/ultity/list_shimmer.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ListWrapper extends StatelessWidget {
-  ListWrapper({super.key,required this.listChild,required this.isLoading});
+  ListWrapper({super.key,required this.listChild,required this.isLoading, this.num = 5});
   
   List<PlayType> listChild;  
   bool isLoading;
+  int num;
 
-  void onClickHandle(){
-
+  void onClickHandle(PlayType child){
+    // print(child.type);
+    if(child.type.toLowerCase() == 'album'){
+      print(child.id);
+    }
   }
  
   @override
@@ -18,7 +22,7 @@ class ListWrapper extends StatelessWidget {
     return Column(
       children: isLoading 
       ? [
-        ListShimmer(num: 5)
+        ListShimmer(num: num)
       ]
       : listChild.map((c){       
           return Column(
@@ -26,7 +30,7 @@ class ListWrapper extends StatelessWidget {
               Row(          
                 children: [
                     GestureDetector(
-                      onTap:onClickHandle,
+                      onTap:()=>onClickHandle(c),
                       child: CachedNetworkImage(
                         progressIndicatorBuilder: (context, url, progress) => Center(  
                           child: SizedBox(
@@ -47,7 +51,7 @@ class ListWrapper extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GestureDetector(
-                          onTap:onClickHandle,
+                          onTap:()=>onClickHandle(c),
                           child: Text(c.name,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
                         ),
                         const SizedBox(height: 5),

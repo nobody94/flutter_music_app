@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Album extends StatefulWidget {
-  const Album({super.key});
-
+  Album({super.key, required this.title, required this.id});
+  String title;
+  String id;
   @override
   State<Album> createState() => _AlbumState();
 }
@@ -10,6 +11,8 @@ class Album extends StatefulWidget {
 class _AlbumState extends State<Album> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [],
+    );
   }
 }

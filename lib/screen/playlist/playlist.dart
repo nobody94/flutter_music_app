@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'list_wrapper.dart';
+import '../../ultity/list_wrapper.dart';
 
 // ignore: must_be_immutable
 class PlayList extends StatelessWidget {
